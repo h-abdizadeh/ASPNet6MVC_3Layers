@@ -6,4 +6,6 @@ public interface IGroup:IDisposable
 {
     Task<List<Group>> GetGroups();
     Task<Group> GetGroup(int groupId);
+
+    Task<bool> AddGroup(Group group);
 }

@@ -1,6 +1,7 @@
 ﻿using CarShop.Core.Interface;
 using CarShop.Database.Models;
 using CarShop.Database.Context;
+using System.Formats.Asn1;
 
 namespace CarShop.Core.Service;
 
@@ -12,6 +13,28 @@ public class GroupService : IGroup
     public GroupService(DatabaseContext context)
     {
         _context = context;
+    }
+
+    public async Task<bool> AddGroup(Group group)
+    {
+
+        try
+        {
+            //1
+            _context.Update(group);
+            _context.SaveChanges();
+
+
+            return await Task.FromResult(true);
+        }
+        catch (Exception error)
+        {
+            Console.WriteLine(error.Message,
+                              Console.BackgroundColor = ConsoleColor.Red,
+                              Console.ForegroundColor = ConsoleColor.Yellow);
+
+            return await Task.FromResult(false);
+        }
     }
 
     public void Dispose()

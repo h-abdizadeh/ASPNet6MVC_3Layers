@@ -8,6 +8,7 @@
 <h1>@Model.GroupName | جزییات</h1>
 
 <div>
+    <h4 id="edit-mode"  class="text-center text-white rounded-2 p-1 m-1" hidden></h4>
     <hr />
     <dl class="row alert alert-info col-md-6 col-12">
         <dt class="col-sm-4">
@@ -30,13 +31,15 @@
             @{
                 if (Model.NotShow)
                 {
-                    <a class="btn btn-danger rounded-5">
-                        <span class="fa fa-times-circle"></span> عدم نمایش عمومی</a>
+                        <a class="btn btn-danger rounded-5">
+                            <span class="fa fa-times-circle"></span> عدم نمایش عمومی
+                        </a>
                 }
                 else
                 {
-                    <a class="btn btn-success rounded-5" >
-                    <span class="fa fa-check-circle"></span> نمایش عمومی</a>
+                        <a class="btn btn-success rounded-5">
+                            <span class="fa fa-check-circle"></span> نمایش عمومی
+                        </a>
                 }
             }
         </dd>
@@ -49,3 +52,20 @@
     <a asp-action="Index"
        class="btn btn-outline-info"><span class="fa fa-arrow-left"></span> Back to List</a>
 </div>
+
+<script type="text/javascript">
+
+    let _editTitle = document.getElementById('edit-mode');
+
+    window.addEventListener('load', () => {
+        //alert('@(ViewBag.EditResult)');
+        let _result = '@(ViewBag.EditResult)';
+
+        if (_result == 'True') {
+            //console.log(_result);
+            _editTitle.innerHTML = "ویرایش با موفقیت انجام شد";
+            _editTitle.classList.add('bg-success');
+            _editTitle.hidden = false;
+        }
+    })
+</script>
