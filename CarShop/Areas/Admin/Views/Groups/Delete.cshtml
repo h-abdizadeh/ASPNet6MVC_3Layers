@@ -1,0 +1,12 @@
+﻿@model CarShop.Database.Models.Group
+
+<div dir="rtl">
+    <h6> حذف گروه @Model.GroupName ؟</h6>
+    <form asp-action="Delete">
+        <input asp-for="Id" />
+        <div>
+            <input type="submit" value="Delete" class="btn btn-danger" />
+            <a class="btn btn-outline-danger">Cancel</a>
+        </div>
+    </form>
+</div>

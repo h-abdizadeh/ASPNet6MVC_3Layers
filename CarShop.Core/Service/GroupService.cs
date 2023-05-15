@@ -15,15 +15,14 @@ public class GroupService : IGroup
         _context = context;
     }
 
-    public async Task<bool> AddGroup(Group group)
+    public async Task<bool> EditGroup(Group group)
     {
 
         try
         {
             //1
             _context.Update(group);
-            _context.SaveChanges();
-
+            await _context.SaveChangesAsync();
 
             return await Task.FromResult(true);
         }
@@ -61,5 +60,50 @@ public class GroupService : IGroup
         var groups = _context.Groups.ToList();
 
         return await Task.FromResult(groups);
+    }
+
+    public async Task<bool> AddGroup(Group group)
+    {
+        try
+        {
+            _context.Groups.Add(group);
+            await _context.SaveChangesAsync();
+
+            return await Task.FromResult(true);
+        }
+        catch (Exception error)
+        {
+            Console.WriteLine(error.Message,
+                              Console.BackgroundColor = ConsoleColor.Red,
+                              Console.ForegroundColor = ConsoleColor.Yellow);
+            return await Task.FromResult(false);
+        }
+    }
+
+    public async Task<bool> DeleteGroup(int groupId)
+    {
+        try
+        {
+            var group = _context.Groups.Find(groupId);
+            if (group != null)
+            {
+                _context.Groups.Remove(group);
+                await _context.SaveChangesAsync();
+
+                return await Task.FromResult(true);
+            }
+
+            return await Task.FromResult(false);
+
+        }
+        catch (Exception error)
+        {
+            Console.WriteLine(error.Message,
+                              Console.BackgroundColor = ConsoleColor.Red,
+                              Console.ForegroundColor = ConsoleColor.Yellow);
+            return await Task.FromResult(false);
+        }
+
+
     }
 }

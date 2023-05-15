@@ -8,49 +8,73 @@
 <h1>Groups | دسته بندی ها</h1>
 
 <p>
-    <a asp-action="Create" 
-    class="btn btn-success ms-1"><span class="fa fa-plus-circle fa-lg"></span> Create New</a>
+    <a asp-action="Create"
+       class="btn btn-success ms-1"><span class="fa fa-plus-circle fa-lg"></span> Create New</a>
 </p>
 <div class="p-2">
-<table class="table table-hover table-striped">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.GroupName)
-            </th>
-          @*  <th>
+
+    <div id="delete-group">
+
+    </div>
+    <table class="table table-hover table-striped">
+        <thead>
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.GroupName)
+                </th>
+                @*  <th>
                 @Html.DisplayNameFor(model => model.GroupDes)
-            </th>*@
-            <th>
-                @Html.DisplayNameFor(model => model.NotShow)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.GroupName)
-            </td>
-          @*  <td>
+                </th>*@
+                <th>
+                    @Html.DisplayNameFor(model => model.NotShow)
+                </th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.GroupName)
+                    </td>
+                    @*  <td>
                 @Html.DisplayFor(modelItem => item.GroupDes)
-            </td>*@
-            <td>
-                @Html.DisplayFor(modelItem => item.NotShow)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.Id" 
-                class="btn btn-warning"><span class="fa fa-edit"></span> Edit</a> |
-                
-                <a asp-action="Details" asp-route-id="@item.Id" 
-                class="btn btn-info" ><span class="fa fa-info"></span> Details</a> |
-                
-                <a asp-action="Delete" asp-route-id="@item.Id"
-                class="btn btn-danger" ><span class="fa fa-trash"></span> Delete</a>
-            </td>
-        </tr>
-}
-    </tbody>
-</table>
+                </td>*@
+                    <td>
+                        @Html.DisplayFor(modelItem => item.NotShow)
+                    </td>
+                    <td>
+                        <a asp-action="Edit" asp-route-id="@item.Id"
+                       class="btn btn-warning"><span class="fa fa-edit"></span> Edit</a> |
+
+                        <a asp-action="Details" asp-route-id="@item.Id"
+                       class="btn btn-info"><span class="fa fa-info"></span> Details</a> |
+
+                        <a onclick="DeleteForm(@item.Id)" class="btn btn-danger"><span class="fa fa-trash"></span> Delete</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
 </div>
+
+
+<script>
+
+    function DeleteForm(groupId) {
+
+        console.log(groupId);
+
+        $.ajax({
+            url: '/admin/groups/delete',
+            type: "Get",
+            data: { id: groupId },
+            success:(result)=>{
+                $('#delete-group').html(result);
+            }
+        });
+    }
+
+
+</script>
