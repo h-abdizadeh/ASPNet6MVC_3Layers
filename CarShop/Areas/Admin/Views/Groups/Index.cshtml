@@ -13,9 +13,7 @@
 </p>
 <div class="p-2">
 
-    <div id="delete-group">
 
-    </div>
     <table class="table table-hover table-striped">
         <thead>
             <tr>
@@ -51,7 +49,12 @@
                         <a asp-action="Details" asp-route-id="@item.Id"
                        class="btn btn-info"><span class="fa fa-info"></span> Details</a> |
 
-                        <a onclick="DeleteForm(@item.Id)" class="btn btn-danger"><span class="fa fa-trash"></span> Delete</a>
+                        <div id='@("delete-group-"+item.Id)' class="d-inline-block">
+                            <a onclick="DeleteForm(@item.Id)" class="btn btn-danger">
+                                <span class="fa fa-trash"></span> Delete
+                            </a>
+                        </div>
+
                     </td>
                 </tr>
             }
@@ -64,14 +67,28 @@
 
     function DeleteForm(groupId) {
 
-        console.log(groupId);
+        //console.log(groupId);
 
         $.ajax({
             url: '/admin/groups/delete',
             type: "Get",
             data: { id: groupId },
-            success:(result)=>{
-                $('#delete-group').html(result);
+            success: (result) => {
+                let _deleteBox = document.getElementById('delete-group-' + groupId);
+                let _deleteBoxInner = _deleteBox.innerHTML;
+                //console.log(_deleteBoxInner);
+
+                //J-Query
+                //$('#delete-group-' + groupId).html(result);
+                
+                //pure js
+                _deleteBox.innerHTML = result;
+
+                let _btnCancel = document.getElementById('btn-cancel-' + groupId);
+
+                _btnCancel.addEventListener('click', () => {
+                    _deleteBox.innerHTML = _deleteBoxInner;
+                })
             }
         });
     }

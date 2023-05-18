@@ -91,4 +91,13 @@ public class GroupsController : Controller
 
         return PartialView(group);
     }
+
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> DeleteEntryGroup(int id)
+    {
+        await _group.DeleteGroup(id);
+
+        return RedirectToAction(nameof(Index));
+    }
 }
