@@ -1,0 +1,7 @@
+﻿@model IEnumerable<CarShop.Database.Models.Group>
+
+    @foreach (var item in Model)
+{
+    <a class="btn btn-outline-info rounded-5 m-1">
+        <span class="fa fa-car"></span> @item.GroupName</a>
+}

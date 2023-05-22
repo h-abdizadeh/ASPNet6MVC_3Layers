@@ -1,2 +1,221 @@
-﻿body {
+﻿* {
+    --skyblue: rgb(0, 129, 180);
+}
+
+body {
+    margin: auto;
+    direction: rtl;
+    background-color: white;
+    overflow-x:hidden;
+}
+
+/*//////////// top menu //////////////*/
+header {
+    padding-left: 15px;
+    padding-right: 15px;
+    padding-top: 35px;
+}
+    header .title {
+        position: absolute;
+        width: 100%;
+        top: 25px;
+        color: white;
+    }
+
+        header .title h1 {
+            margin-right: 220px;
+            margin-top: 10px;
+            display: inline-block;
+        }
+
+        header .title input {
+            float: left;
+            margin-left: 132px;
+            margin-top: 20px;
+            padding: 10px;
+            background-color: whitesmoke;
+            border-radius: 45px;
+            width: 75px;
+            border: none;
+            outline: none;
+            direction: ltr;
+            transition: 0.3s;
+        }
+
+            header .title input:focus {
+                background-color: white;
+                width: 320px;
+            }
+
+    header .bar {
+        background-color: var(--skyblue);
+        border-radius: 10px;
+        width: 100%;
+        height: 64px;
+    }
+
+    header .logo {
+        aspect-ratio: 1/1;
+        width: 128px;
+        overflow: hidden;
+        border-radius: 100%;
+        background-color: black;
+        position: relative;
+        top: -32px;
+        right: 64px;
+    }
+
+        header .logo:hover img {
+            transform: translate(150px) rotate(360deg);
+            opacity: 0;
+        }
+
+        header .logo img {
+            border-radius: 100%;
+            position: absolute;
+            top: -10px;
+            left: -10px;
+            z-index: 9;
+            width: 148px;
+            transition: 0.5s;
+        }
+
+
+        header .logo h1 {
+            position: relative;
+            top: 0;
+            color: whitesmoke;
+            line-height: 120px;
+            text-align: center;
+            z-index: 1;
+        }
+
+    header .buttons {
+        display: inline-block;
+        background-color: black;
+        color: whitesmoke;
+        border-radius: 0 0 5px 5px;
+        padding: 2px 0;
+        position: relative;
+        border-top: 5px solid var(--skyblue);
+        top: -5px;
+        right: 70%;
+    }
+
+        header .buttons a {
+            display: inline-block;
+            text-decoration: none;
+            color: whitesmoke;
+            padding: 10px 21px;
+            cursor: pointer;
+            position: relative;
+            background-color: black;
+            border-radius: 5px;
+            transition: 0.5s;
+        }
+
+            header .buttons a:hover {
+                color: var(--skyblue);
+                transform: translateY(15px);
+            }
+
+/*///////////// slider /////////////*/
+.slider {
+    direction:ltr;
+    width: 100%;
+    height: 320px;
+    border-radius: 10px;
+    overflow: hidden;
+    background-color: #1e1e1e;
+    position: relative;
+}
+
+.shape-right {
+    clip-path: polygon(25% 0, 100% 0%, 100% 100%, 0% 100%);
+    overflow: hidden;
+    width: 50%;
+    position: absolute;
+    left: 60%;
+    transition: 0.5s;
+}
+
+.shape-center {
+    clip-path: polygon(25% 0, 100% 0%, 75% 100%, 0% 100%);
+    overflow: hidden;
+    width: 50%;
+    position: absolute;
+    left: 25%;
+    transition: 0.5s;
+}
+
+.shape-left {
+    clip-path: polygon(0 0, 100% 0%, 75% 100%, 0% 100%);
+    overflow: hidden;
+    width: 50%;
+    position: absolute;
+    transition: 0.5s;
+}
+
+.detail {
+    position: absolute;
+    border: 1px solid white;
+    border-radius: 5px;
+    padding: 32px;
+    text-justify: left;
+    top: 32px;
+    right: -100%;
+    color: white;
+    background-color: rgba(30, 30, 30, 0.6);
+}
+
+    .detail button {
+        color: white;
+        border-radius: 3px;
+        background-color: #0653b6;
+        outline: none;
+        border: none;
+        padding: 10px 52px;
+        font-size: 14pt;
+    }
+
+.shape-left:hover, .shape-center:hover, .shape-right:hover {
+    background-color: #1e1e1e;
+    width: 100%;
+    clip-path: polygon(0 0, 100% 0%, 100% 100%, 0% 100%);
+    left: 0;
+    z-index: 9;
+}
+
+    .shape-left:hover img {
+        width: 100%;
+    }
+
+    .shape-center:hover img {
+        width: 100%;
+    }
+
+    .shape-right:hover img {
+        width: 100%;
+    }
+
+    .shape-left:hover .detail {
+        animation: transform-LtoR 1s forwards;
+    }
+
+    .shape-center:hover .detail {
+        animation: transform-LtoR 1s forwards;
+    }
+
+    .shape-right:hover .detail {
+        animation: transform-LtoR 1s forwards;
+    }
+
+@keyframes transform-LtoR {
+    from {
+        right: -100%;
+    }
+
+    to {
+        right: 10px;
+    }
 }

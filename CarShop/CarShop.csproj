@@ -8,7 +8,6 @@
 
   <ItemGroup>
     <Folder Include="wwwroot\image\product\" />
-    <Folder Include="wwwroot\image\site\" />
     <Folder Include="wwwroot\lib\" />
   </ItemGroup>
 

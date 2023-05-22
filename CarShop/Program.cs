@@ -1,7 +1,6 @@
 using CarShop.Core.Interface;
 using CarShop.Core.Service;
 using CarShop.Database.Context;
-using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -11,6 +10,7 @@ builder.Services.AddRazorPages().AddRazorRuntimeCompilation();
 
 builder.Services.AddScoped<DatabaseContext, DatabaseContext>();
 builder.Services.AddScoped<IGroup, GroupService>();
+builder.Services.AddScoped<IProduct, ProductService>();
 
 var app = builder.Build();
 
@@ -32,7 +32,7 @@ app.UseEndpoints(endpoints =>
 {
     endpoints.MapControllerRoute(
             name: "area",
-            pattern: "{area:exists}/{controller=Home}/{action=Index}/{id?}");
+            pattern: "{area:exists}/{controller=Panel}/{action=Index}/{id?}");
 
     endpoints.MapControllerRoute(
         name: "default",
