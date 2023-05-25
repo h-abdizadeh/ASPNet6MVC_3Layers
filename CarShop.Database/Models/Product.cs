@@ -1,7 +1,5 @@
-﻿using System.CodeDom.Compiler;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Runtime.CompilerServices;
 
 namespace CarShop.Database.Models;
 
