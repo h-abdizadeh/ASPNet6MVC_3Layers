@@ -1,6 +1,6 @@
 ﻿
 using CarShop.Database.Models;
-using System.ComponentModel;
+using Microsoft.AspNetCore.Http;
 
 namespace CarShop.Core.Interface;
 
@@ -10,7 +10,7 @@ public interface IProduct : IDisposable
 
     Task<Product> GetProduct(Guid productId);
 
-    Task<bool> AddProduct(Product product);
+    Task<bool> AddProduct(Product product,IFormFile productImg);
 
     Task<bool> EditProduct(Product product);
 

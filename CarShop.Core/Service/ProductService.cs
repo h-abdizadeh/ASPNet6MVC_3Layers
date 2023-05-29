@@ -2,6 +2,7 @@
 using CarShop.Core.Interface;
 using CarShop.Database.Context;
 using CarShop.Database.Models;
+using Microsoft.AspNetCore.Http;
 
 namespace CarShop.Core.Service;
 
@@ -14,7 +15,7 @@ public class ProductService : IProduct
         _context = context;
     }
 
-    public Task<bool> AddProduct(Product product)
+    public Task<bool> AddProduct(Product product, IFormFile productImg)
     {
         throw new NotImplementedException();
     }

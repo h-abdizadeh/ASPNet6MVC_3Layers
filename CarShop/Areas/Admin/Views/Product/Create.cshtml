@@ -11,17 +11,17 @@
 <hr />
 <div class="row">
     <div class="col-md-4">
-        <form asp-action="Create">
+        <form asp-action="Create" enctype="multipart/form-data">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
                 <label asp-for="Id" class="control-label"></label>
-                <input asp-for="Id" class="form-control" />
+                <input asp-for="Id" value="@ViewBag.ProductId" class="form-control" readonly />
                 <span asp-validation-for="Id" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="GroupId" class="control-label"></label>
-                <select asp-for="GroupId" class ="form-control" asp-items="ViewBag.GroupId">
-                    <option selected disabled hidden >--- Select Group ---</option>
+                <select asp-for="GroupId" class="form-control" asp-items="ViewBag.GroupId">
+                    <option selected disabled hidden>--- Select Group ---</option>
 
                 </select>
             </div>
@@ -32,20 +32,22 @@
             </div>
             <div class="form-group">
                 <label asp-for="Des" class="control-label"></label>
-                <textarea asp-for="Des" class="form-control" ></textarea>
+                <textarea asp-for="Des" class="form-control"></textarea>
                 <span asp-validation-for="Des" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="Img" class="control-label"></label>
                 <br />
-                <input type="file" name="productImg"  />
+                <input type="file" name="productImg" accept=".jpg,.png" onchange="ImgPreview(this)" />
+                <img id="product-preview" src="" width="256" />
 
-                <input asp-for="Img" class="form-control" />
+                <input id="img-name" asp-for="Img" class="form-control" hidden/>
                 <span asp-validation-for="Img" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="Price" class="control-label"></label>
-                <input asp-for="Price" value="0" min="0" class="form-control" />
+                <input id="price" asp-for="Price" onkeyup="FinalPrice()" value="0" min="0" class="form-control" />
+                <h5 id="final-price"></h5>
                 <span asp-validation-for="Price" class="text-danger"></span>
             </div>
             <div class="form-group">
@@ -55,7 +57,7 @@
             </div>
             <div class="form-group">
                 <label asp-for="SellOff" class="control-label"></label>
-                <input asp-for="SellOff" value="0" min="0" max="99" class="form-control" />
+                <input id="sell-off" asp-for="SellOff" onkeyup="FinalPrice()" value="0" min="0" max="99" class="form-control" />
                 <span asp-validation-for="SellOff" class="text-danger"></span>
             </div>
             <div class="form-group form-check">
@@ -74,3 +76,34 @@
     <a asp-action="Index">Back to List</a>
 </div>
 
+<script>
+    function ImgPreview(input) {
+        if (input.files && input.files[0]) {
+            let reader = new FileReader();
+            reader.onload = (e) => {
+                let img = document.getElementById('product-preview');
+                img.setAttribute('src', e.target.result);
+
+                //input file name (asp-for="img")
+                document.getElementById('img-name').value= input.files[0].name;
+            }
+
+            reader.readAsDataURL(input.files[0]);
+
+        }
+    }
+
+    function FinalPrice() {
+        let _price = document.getElementById('price').value;
+        let _sellOff = document.getElementById('sell-off').value;
+        let _finalPrice = document.getElementById('final-price');
+
+        console.log(_price)
+        //if (_sellOff > 0) {
+        let _tmp =_price - (_price * _sellOff / 100);
+        _finalPrice.innerHTML = 
+        _tmp.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+        //}
+
+    }
+</script>

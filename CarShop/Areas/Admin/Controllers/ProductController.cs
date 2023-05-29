@@ -1,4 +1,5 @@
 ﻿using CarShop.Core.Interface;
+using CarShop.Database.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 
@@ -25,6 +26,28 @@ public class ProductController : Controller
     {
         ViewBag.GroupId = 
             new SelectList(await _group.GetGroups(), "Id", "GroupName");
+
+        ViewBag.ProductId = Guid.NewGuid();
+
         return View();
+    }
+
+    [HttpPost]
+    [AutoValidateAntiforgeryToken]
+    public async Task<IActionResult> Create(Product product,IFormFile productImg)
+    {     
+
+        if (ModelState.IsValid && productImg!=null)
+        {
+            
+
+        }
+
+        ViewBag.GroupId =
+          new SelectList(await _group.GetGroups(), "Id", "GroupName");
+
+        ViewBag.ProductId = Guid.NewGuid();
+
+        return View(product);
     }
 }
