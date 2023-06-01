@@ -39,8 +39,12 @@ public class ProductController : Controller
 
         if (ModelState.IsValid && productImg!=null)
         {
-            
+            if (await _product.AddProduct(product, productImg))
+            {
+                return RedirectToAction(nameof(Index));
+            }
 
+            ModelState.AddModelError("img", "خطا در ثبت محصول");
         }
 
         ViewBag.GroupId =
@@ -49,5 +53,10 @@ public class ProductController : Controller
         ViewBag.ProductId = Guid.NewGuid();
 
         return View(product);
+    }
+
+    public async Task<IActionResult> Delete()
+    {
+        return PartialView();
     }
 }

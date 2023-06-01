@@ -41,6 +41,6 @@ public class Product
     public bool NotShow { get; set; } = false;
 
     [ForeignKey("GroupId")]
-    public virtual Group Group { get; set; }
+    public virtual Group? Group { get; set; }
 
 }

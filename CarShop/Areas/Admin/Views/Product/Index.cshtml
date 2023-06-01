@@ -16,9 +16,9 @@
             <th>
                 @Html.DisplayNameFor(model => model.ProductName)
             </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Des)
-            </th>
+            @*  <th>
+            @Html.DisplayNameFor(model => model.Des)
+            </th>*@
             <th>
                 @Html.DisplayNameFor(model => model.Img)
             </th>
@@ -34,45 +34,97 @@
             <th>
                 @Html.DisplayNameFor(model => model.NotShow)
             </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Group)
-            </th>
+            @* <th>
+            @Html.DisplayNameFor(model => model.Group)
+            </th>*@
             <th></th>
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.ProductName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Des)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Img)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Price)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Inventory)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.SellOff)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.NotShow)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Group.GroupName)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-            </td>
-        </tr>
-}
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ProductName)
+                </td>
+                @* <td>
+            @Html.DisplayFor(modelItem => item.Des)
+            </td>*@
+                <td>
+                    @*@Html.DisplayFor(modelItem => item.Img)*@
+                    <img src="~/image/product/@item.Img" width="128" class="rounded-3 bg-white">
+                </td>
+                <td>
+                    @*@Html.DisplayFor(modelItem => item.Price)*@
+                    @item.Price.ToString("n0")
+
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Inventory)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.SellOff)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.NotShow)
+                </td>
+                @*<td>
+            @Html.DisplayFor(modelItem => item.Group.GroupName)
+            </td>*@
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                    <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                    <a onclick="Delete()" 
+                        data-bs-toggle="modal" 
+                        data-bs-target="#exampleModal" 
+                        class="btn btn-danger">
+                        <span class="fa fa-trash-o"></span>
+                    </a>
+                </td>
+            </tr>
+        }
     </tbody>
 </table>
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                @*<h1 class="modal-title fs-5" id="exampleModalLabel">Modal title</h1>*@
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div id="modalBody" class="modal-body">
+                ...
+            </div>
+          @*  <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary">Save changes</button>
+            </div>*@
+        </div>
+    </div>
+</div>
+
+
+<script>
+
+    const myModal = document.getElementById('myModal')
+    const myInput = document.getElementById('myInput')
+
+    myModal.addEventListener('shown.bs.modal', () => {
+        myInput.focus()
+    })
+
+    function Delete() {
+        $.ajax({
+            url: '/admin/product/delete',
+            type: 'get',
+            data: {},
+            success: (result) => {
+                document.getElementById('modalBody').innerHTML = result;
+            }
+        })
+    }
+
+
+</script>
