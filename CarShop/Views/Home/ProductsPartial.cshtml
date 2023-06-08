@@ -1,0 +1,22 @@
+﻿@model IEnumerable<CarShop.Database.Models.Product>
+
+<!-- products -->
+<main class="product-grid">
+
+    @foreach (var item in Model)
+    {
+        <!-- product -->
+        <div class="product">
+            <img src="~/Image/product/@item.Img" alt="@item.ProductName">
+
+            <!-- product info -->
+            <div class="product-info">
+                <h1>@item.ProductName</h1>
+                <p>@item.Des</p>
+                <a class="button">more...</a>
+            </div>
+
+        </div>
+    }
+
+</main>

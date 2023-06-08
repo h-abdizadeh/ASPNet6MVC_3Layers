@@ -24,7 +24,7 @@ public class ProductController : Controller
 
     public async Task<IActionResult> Create()
     {
-        ViewBag.GroupId = 
+        ViewBag.GroupId =
             new SelectList(await _group.GetGroups(), "Id", "GroupName");
 
         ViewBag.ProductId = Guid.NewGuid();
@@ -34,10 +34,10 @@ public class ProductController : Controller
 
     [HttpPost]
     [AutoValidateAntiforgeryToken]
-    public async Task<IActionResult> Create(Product product,IFormFile productImg)
-    {     
+    public async Task<IActionResult> Create(Product product, IFormFile productImg)
+    {
 
-        if (ModelState.IsValid && productImg!=null)
+        if (ModelState.IsValid && productImg != null)
         {
             if (await _product.AddProduct(product, productImg))
             {
@@ -55,8 +55,23 @@ public class ProductController : Controller
         return View(product);
     }
 
-    public async Task<IActionResult> Delete()
+    public async Task<IActionResult> Delete(Guid id)//id=>productId
     {
-        return PartialView();
+        var product = await _product.GetProduct(id);
+
+        if (product == null)
+        {
+            return RedirectToAction(nameof(Index));
+        }
+
+        return PartialView(product);
+    }
+
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> Delete(Product product)
+    {
+        await _product.DeleteProduct(product.Id);
+        return RedirectToAction(nameof(Index));
     }
 }

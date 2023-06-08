@@ -11,6 +11,9 @@ namespace CarShop.Core.Service;
 
 public class ProductService : IProduct
 {
+
+    string imgPath = "wwwroot/image/product";
+
     private readonly DatabaseContext _context;
 
     public ProductService(DatabaseContext context)
@@ -28,7 +31,6 @@ public class ProductService : IProduct
             string imgName = imgCode + productImg.FileName;
 
             //2
-            string imgPath = "wwwroot/image/product";
             //if imgPath directory not exists
             if (!Directory.Exists(imgPath))
                 Directory.CreateDirectory(imgPath);
@@ -57,11 +59,42 @@ public class ProductService : IProduct
         }
     }
 
-    public Task<bool> DeleteProduct(Guid productId)
+    public async Task<bool> DeleteProduct(Guid productId)
     {
-        throw new NotImplementedException();
-    }
+        try
+        {
+            var product = _context.Products.Find(productId);
+            if (product != null)
+            {
+                //1
+                //delete product image 'file' from image directory
+                var imgAddress = Path.Combine(imgPath, product.Img);
+                if (File.Exists(imgAddress))
+                {
+                    File.Delete(imgAddress);
+                }
 
+                //2
+                //remove product 'record' from products table (database)
+                _context.Products.Remove(product);
+                await _context.SaveChangesAsync();
+
+                return await Task.FromResult(true);
+            }
+
+            //product==null
+            return await Task.FromResult(false);
+        }
+        catch (Exception error)
+        {
+            WriteLine(error.Message,
+                      BackgroundColor = Red,
+                      ForegroundColor = Yellow);
+
+            return await Task.FromResult(false);
+
+        }
+    }
     public void Dispose()
     {
         if (_context != null)
@@ -75,9 +108,10 @@ public class ProductService : IProduct
         throw new NotImplementedException();
     }
 
-    public Task<Product> GetProduct(Guid productId)
+    public async Task<Product> GetProduct(Guid productId)
     {
-        throw new NotImplementedException();
+        var product = _context.Products.Find(productId);
+        return await Task.FromResult(product);
     }
 
     public async Task<List<Product>> GetProducts(bool? notShow = null)

@@ -15,11 +15,16 @@
     <div class="col-12 text-center">
         <partial name="groupsPartial.cshtml" model="Model.Groups" />
         <a class="btn btn-info rounded-5 m-1 text-white">
-            <span class="fa fa-ellipsis-h"></span> more
+            <span></span> more...
         </a>
     </div>
     <hr class="w-75 m-auto" />
-    <h1>Index</h1>
+    
+    @*products*@
+    <div class="col-12 p-0 mt-3">
+        <partial name="productsPartial" model="Model.Products" />
+    </div>
+
 
 </div>
 
