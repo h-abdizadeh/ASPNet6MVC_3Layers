@@ -7,13 +7,27 @@
     {
         <!-- product -->
         <div class="product">
+
+            @*group title*@
+            <a class="product-group">@item.Group.GroupName</a>
+
+            @*selloff title*@
+            @{
+                if (item.SellOff>0)
+                {
+                    <a class="product-selloff">@item.SellOff %</a>
+                }
+            }
+
+            <h1 class="product-price" >@item.Price.ToString("n0")</h1>
+
             <img src="~/Image/product/@item.Img" alt="@item.ProductName">
 
             <!-- product info -->
             <div class="product-info">
                 <h1>@item.ProductName</h1>
                 <p>@item.Des</p>
-                <a class="button">more...</a>
+                <a asp-controller="home" asp-action="productInfo" class="button">more...</a>
             </div>
 
         </div>

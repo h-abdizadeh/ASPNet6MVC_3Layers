@@ -6,11 +6,11 @@ namespace CarShop.Core.Interface;
 
 public interface IProduct : IDisposable
 {
-    Task<List<Product>> GetProducts(bool? notShow = null);
+    Task<List<Product>> GetProducts(bool? notShow = null, int? sellOff = null);
 
     Task<Product> GetProduct(Guid productId);
 
-    Task<bool> AddProduct(Product product,IFormFile productImg);
+    Task<bool> AddProduct(Product product, IFormFile productImg);
 
     Task<bool> EditProduct(Product product);
 

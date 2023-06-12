@@ -3,6 +3,7 @@ using CarShop.Core.Interface;
 using CarShop.Database.Context;
 using CarShop.Database.Models;
 using Microsoft.AspNetCore.Http;
+using Microsoft.EntityFrameworkCore;
 
 using static System.Console;
 using static System.ConsoleColor;
@@ -114,13 +115,18 @@ public class ProductService : IProduct
         return await Task.FromResult(product);
     }
 
-    public async Task<List<Product>> GetProducts(bool? notShow = null)
+    public async Task<List<Product>> GetProducts(bool? notShow = null, int? sellOff = null)
     {
-        var products = _context.Products.ToList();
+        var products = _context.Products.Include(p=>p.Group).ToList();
+
+        if (sellOff!=null)
+        {
+            products = products.Where(p => p.SellOff >= sellOff).ToList();
+        }
 
         if (notShow != null)
         {
-            return await Task.FromResult(products.Where(p => p.NotShow == notShow).ToList());
+            products= products.Where(p => p.NotShow == notShow).ToList();
         }
 
         return await Task.FromResult(products);

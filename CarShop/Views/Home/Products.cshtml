@@ -1,0 +1,13 @@
+﻿@model IEnumerable<CarShop.Database.Models.Product>
+
+@{
+    ViewData["Title"] = "Products";
+    Layout = "~/Views/Shared/_MainLayout.cshtml";
+}
+
+<div class="col-12 p-3">
+    <partial name="productspartial.cshtml" model="Model" />
+
+</div>
+
+

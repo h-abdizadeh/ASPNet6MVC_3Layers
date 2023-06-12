@@ -1,4 +1,5 @@
-﻿using CarShop.Core.Interface;
+﻿using AspNetCore;
+using CarShop.Core.Interface;
 using CarShop.Core.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 
@@ -19,8 +20,10 @@ public class HomeController : Controller
         var groups =
             (await _group.GetGroups(/*notShow:*/false)).Take(4);
 
+
+        //all products by notShow=false and sellOff>=1
         var products =
-            (await _product.GetProducts(false)).Take(4);
+            (await _product.GetProducts(notShow: false, sellOff: 1)).Take(4);
 
         GroupProductViewModel viewModel = new GroupProductViewModel()
         {
@@ -29,5 +32,18 @@ public class HomeController : Controller
         };
 
         return View(viewModel);
+    }
+
+    public async Task<IActionResult> Products()
+    {
+        var products = await _product.GetProducts(false);
+        return View(products);
+    }
+
+    public async Task<IActionResult> ProductInfo(Guid id)//id ==> productId
+    {
+        var product = await _product.GetProduct(id);
+
+        return View(product);
     }
 }
