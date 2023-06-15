@@ -1,5 +1,4 @@
-﻿using AspNetCore;
-using CarShop.Core.Interface;
+﻿using CarShop.Core.Interface;
 using CarShop.Core.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 
@@ -43,6 +42,8 @@ public class HomeController : Controller
     public async Task<IActionResult> ProductInfo(Guid id)//id ==> productId
     {
         var product = await _product.GetProduct(id);
+
+        ViewBag.RelatedProducts = await _product.GetProducts(id);
 
         return View(product);
     }

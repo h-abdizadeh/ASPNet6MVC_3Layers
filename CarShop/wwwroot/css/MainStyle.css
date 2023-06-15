@@ -9,7 +9,11 @@ body {
     background-color: white;
     overflow-x: hidden;
 }
-
+.bg-skyblue{
+    background-color:var(--skyblue) !important;
+}.bg-whitesmoke{
+    background-color:whitesmoke !important;
+}
 /*//////////// top menu //////////////*/
 header {
     padding-left: 15px;

@@ -111,23 +111,38 @@ public class ProductService : IProduct
 
     public async Task<Product> GetProduct(Guid productId)
     {
-        var product = _context.Products.Find(productId);
-        return await Task.FromResult(product);
+        var product =
+            await _context.Products.Include(p => p.Group).FirstOrDefaultAsync(p => p.Id == productId);
+        return product;
     }
 
     public async Task<List<Product>> GetProducts(bool? notShow = null, int? sellOff = null)
     {
-        var products = _context.Products.Include(p=>p.Group).ToList();
+        var products = _context.Products.Include(p => p.Group).ToList();
 
-        if (sellOff!=null)
+        if (sellOff != null)
         {
             products = products.Where(p => p.SellOff >= sellOff).ToList();
         }
 
         if (notShow != null)
         {
-            products= products.Where(p => p.NotShow == notShow).ToList();
+            products = products.Where(p => p.NotShow == notShow).ToList();
         }
+
+        return await Task.FromResult(products);
+    }
+
+    public async Task<List<Product>> GetProducts(Guid productId)
+    {
+        var product = await _context.Products.FindAsync(productId);
+
+        var products = _context.Products
+            .Include(p => p.Group)
+            .Where(p => !p.NotShow && 
+                            p.Id != product.Id && 
+                                p.GroupId == product.GroupId).ToList();
+
 
         return await Task.FromResult(products);
     }

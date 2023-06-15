@@ -1,0 +1,51 @@
+﻿@model CarShop.Database.Models.Product
+
+@{
+    ViewData["Title"] = "ProductInfo";
+    Layout = "~/Views/Shared/_MainLayout.cshtml";
+}
+
+
+<div class="col-12 p-3 row">
+
+    @*img box*@
+    <div class="col-md-4 col-12">
+        <img src="~/image/product/@Model.Img"
+             class="w-100 rounded-3 border"
+             alt="@Model.ProductName" />
+    </div>
+
+    @*info box*@
+    <div class="col-md-8 col-12 shadow-sm rounded-3 bg-whitesmoke">
+        <h1>@Model.ProductName</h1>
+        <a>@Model.Group.GroupName</a>
+        <p>@Model.Des</p>
+        <h6>inventory : @Model.Inventory</h6>
+
+        @*add to shoppingcart*@
+        <div class="col-md-4 col-12 float-end">
+            @{
+                var price = Model.Price;
+                var sellOff = Model.SellOff;
+                var finalPrice = price;
+
+                if (sellOff > 0)
+                {
+                    finalPrice = price - (price * sellOff / 100);
+                    <s class="fw-bold text-black-50">@price.ToString("n0") $</s>
+                    <span class="bg-warning rounded-circle p-1 pt-2 pb-2 text-black small fw-bold" >@Model.SellOff %</span>
+                }
+            }
+            <div class="btn bg-skyblue p-1 w-100 mt-2">
+                <span class="fa fa-cart-arrow-down fa-lg bg-white rounded-1 p-2 w-100 fw-bold">
+                    <span>@finalPrice.ToString("n0")</span>
+                </span>
+                <button class="btn bg-skyblue w-100 text-white fw-bold fs-5">Add To Parking</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
