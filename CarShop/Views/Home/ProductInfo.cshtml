@@ -9,14 +9,14 @@
 <div class="col-12 p-3 row">
 
     @*img box*@
-    <div class="col-md-4 col-12">
+    <div class="col-md-5 col-12">
         <img src="~/image/product/@Model.Img"
              class="w-100 rounded-3 border"
              alt="@Model.ProductName" />
     </div>
 
     @*info box*@
-    <div class="col-md-8 col-12 shadow-sm rounded-3 bg-whitesmoke">
+    <div class="col-md-7 col-12 shadow-sm rounded-3 bg-whitesmoke">
         <h1>@Model.ProductName</h1>
         <a>@Model.Group.GroupName</a>
         <p>@Model.Des</p>
@@ -33,7 +33,7 @@
                 {
                     finalPrice = price - (price * sellOff / 100);
                     <s class="fw-bold text-black-50">@price.ToString("n0") $</s>
-                    <span class="bg-warning rounded-circle p-1 pt-2 pb-2 text-black small fw-bold" >@Model.SellOff %</span>
+                    <span class="bg-warning rounded-circle p-1 pt-2 pb-2 text-black small fw-bold">@Model.SellOff %</span>
                 }
             }
             <div class="btn bg-skyblue p-1 w-100 mt-2">
@@ -46,6 +46,24 @@
     </div>
 </div>
 
+@*related products*@
+@{
+    //var products = ViewData["RelatedProducts"];
+    var products = ViewBag.RelatedProducts;
+
+    if (products != null && products.Count > 0)
+    {
+        <div class="col-12 p-3">
+
+            <h1 class="text-info" >similar cars</h1>
+            <hr class="border-info" />
+            <partial name="productsPartial" model="products" />
+        </div>
+
+    }
+}
+
 <div>
-    <a asp-action="Index">Back to List</a>
+    <a class="btn btn-outline-info rounded-5 m-2" asp-action="Index">
+        <span class="fa fa-angle-left"></span> Back to Home</a>
 </div>

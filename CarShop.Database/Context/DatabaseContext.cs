@@ -23,4 +23,6 @@ public class DatabaseContext:DbContext
     public DbSet<User> Users { get; set; }
     public DbSet<Product> Products { get; set; }
     public DbSet<Group> Groups { get; set; }
+    public DbSet<Feature> Features { get; set; }
+    public DbSet<ProductFeature> ProductFeatures { get; set; }
 }

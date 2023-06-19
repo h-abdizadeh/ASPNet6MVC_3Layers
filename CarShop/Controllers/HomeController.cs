@@ -43,7 +43,8 @@ public class HomeController : Controller
     {
         var product = await _product.GetProduct(id);
 
-        ViewBag.RelatedProducts = await _product.GetProducts(id);
+        //ViewBag.RelatedProducts = await _product.GetProducts(id);
+        ViewData["RelatedProducts"] = await _product.GetProducts(id);
 
         return View(product);
     }

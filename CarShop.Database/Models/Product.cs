@@ -43,4 +43,6 @@ public class Product
     [ForeignKey("GroupId")]
     public virtual Group? Group { get; set; }
 
+    public virtual ICollection<ProductFeature>? ProductFeatures { get; set; }
+
 }

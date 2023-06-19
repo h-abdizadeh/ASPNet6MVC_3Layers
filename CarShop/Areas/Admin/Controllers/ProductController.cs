@@ -74,4 +74,29 @@ public class ProductController : Controller
         await _product.DeleteProduct(product.Id);
         return RedirectToAction(nameof(Index));
     }
+
+    public async Task<IActionResult> IndexFeature()
+    {
+        var featurs=await _product.GetFeatures();
+        return View(featurs);
+    }
+    public IActionResult AddFeature()
+    {
+        return View();
+    }
+
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> AddFeature(Feature feature)
+    {
+        if (ModelState.IsValid)
+        {
+            if (await _product.AddFeature(feature))
+            {
+                return RedirectToAction(nameof(IndexFeature));
+            }
+        }
+
+        return View(feature);
+    }
 }

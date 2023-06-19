@@ -137,13 +137,52 @@ public class ProductService : IProduct
     {
         var product = await _context.Products.FindAsync(productId);
 
+        if (product == null) return null;
+
         var products = _context.Products
             .Include(p => p.Group)
-            .Where(p => !p.NotShow && 
-                            p.Id != product.Id && 
-                                p.GroupId == product.GroupId).ToList();
+            .Where(p => !p.NotShow &&
+                         p.Id != product.Id &&
+                         p.GroupId == product.GroupId).ToList();
 
 
         return await Task.FromResult(products);
+    }
+
+    public async Task<bool> AddFeature(Feature feature)
+    {
+        try
+        {
+            await _context.Features.AddAsync(feature);
+            await _context.SaveChangesAsync();
+            return true;
+        }
+        catch (Exception)
+        {
+
+            return false;
+        }
+    }
+
+    public async Task<bool> AddFeature(ProductFeature productFeature)
+    {
+        try
+        {
+            await _context.ProductFeatures.AddAsync(productFeature);
+            await _context.SaveChangesAsync();
+            return true;
+        }
+        catch (Exception)
+        {
+
+            return false;
+        }
+    }
+
+    public async Task<List<Feature>> GetFeatures()
+    {
+        var features =await  _context.Features.ToListAsync();
+
+        return features;
     }
 }
