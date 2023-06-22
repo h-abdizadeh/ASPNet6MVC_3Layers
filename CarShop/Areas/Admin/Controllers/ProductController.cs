@@ -77,7 +77,7 @@ public class ProductController : Controller
 
     public async Task<IActionResult> IndexFeature()
     {
-        var featurs=await _product.GetFeatures();
+        var featurs = await _product.GetFeatures();
         return View(featurs);
     }
     public IActionResult AddFeature()
@@ -99,4 +99,32 @@ public class ProductController : Controller
 
         return View(feature);
     }
+
+    public async Task<IActionResult> CreateProductFeature(Guid id)
+    {
+        ViewBag.ProductFeatures = await _product.GetProductFeatures(id);
+
+        ViewBag.ProductId = id;
+
+        var features = await _product.GetFeatures();
+        ViewBag.FeatureId = new SelectList(features, "Id", "Title");
+
+        return View();
+    }
+
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> CreateProductFeature(ProductFeature productFeature)
+    {
+        if (await _product.AddProductFeature(productFeature))
+            return RedirectToAction("CreateProductFeature",
+                                     new { id = productFeature.ProductId });
+
+
+        ViewBag.ProductFeatures =
+            await _product.GetProductFeatures(productFeature.ProductId);
+        return View(productFeature);
+    }
+
+
 }

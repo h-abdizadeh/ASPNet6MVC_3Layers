@@ -18,8 +18,11 @@ public interface IProduct : IDisposable
 
     Task<bool> DeleteProduct(Guid productId);
 
-
     Task<List<Feature>> GetFeatures();
     Task<bool> AddFeature(Feature feature);
     Task<bool> AddFeature(ProductFeature productFeature);
+
+    Task<bool> AddProductFeature(ProductFeature productFeature);
+
+    Task<List<ProductFeature>> GetProductFeatures(Guid productId);
 }

@@ -181,8 +181,34 @@ public class ProductService : IProduct
 
     public async Task<List<Feature>> GetFeatures()
     {
-        var features =await  _context.Features.ToListAsync();
+        var features = await _context.Features.ToListAsync();
 
         return features;
+    }
+
+    public async Task<bool> AddProductFeature(ProductFeature productFeature)
+    {
+        try
+        {
+            await _context.ProductFeatures.AddAsync(productFeature);
+            await _context.SaveChangesAsync();
+            return true;
+        }
+        catch (Exception)
+        {
+
+            return false;
+        }
+    }
+
+    public async Task<List<ProductFeature>> GetProductFeatures(Guid productId)
+    {
+        var features =
+            _context.ProductFeatures.Include(p => p.Product)
+                                    .Include(p => p.Feature)
+                                    .Where(f => f.ProductId == productId)
+                                    .ToList();
+
+        return await Task.FromResult(features);
     }
 }

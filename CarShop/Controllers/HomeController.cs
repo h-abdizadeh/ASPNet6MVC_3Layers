@@ -45,6 +45,7 @@ public class HomeController : Controller
 
         //ViewBag.RelatedProducts = await _product.GetProducts(id);
         ViewData["RelatedProducts"] = await _product.GetProducts(id);
+        ViewBag.ProductFeatures = await _product.GetProductFeatures(id);
 
         return View(product);
     }
