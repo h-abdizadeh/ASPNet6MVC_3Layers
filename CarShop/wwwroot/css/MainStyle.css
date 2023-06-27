@@ -9,10 +9,13 @@ body {
     background-color: white;
     overflow-x: hidden;
 }
-.bg-skyblue{
-    background-color:var(--skyblue) !important;
-}.bg-whitesmoke{
-    background-color:whitesmoke !important;
+
+.bg-skyblue {
+    background-color: var(--skyblue) !important;
+}
+
+.bg-whitesmoke {
+    background-color: whitesmoke !important;
 }
 /*//////////// top menu //////////////*/
 header {
@@ -290,12 +293,15 @@ header {
             font-style: italic;
             font-weight: bold;
             cursor: pointer;
-            transition:0.5s;
+            transition: 0.5s;
         }
-        .product-grid .product:hover .product-group{
-            left:-50%;
-        }.product-grid .product:hover .product-selloff{
-            right:-50%;
+
+        .product-grid .product:hover .product-group {
+            left: -50%;
+        }
+
+        .product-grid .product:hover .product-selloff {
+            right: -50%;
         }
 
         .product-grid .product .product-price {
@@ -316,11 +322,12 @@ header {
 
         .product-grid .product img {
             width: 100%;
-            transition:0.5s;
+            transition: 0.5s;
         }
+
         .product-grid .product:hover img {
             /*filter:blur(5px);*/
-            transform:scale(1.25);
+            transform: scale(1.25);
         }
 
 
@@ -354,3 +361,35 @@ header {
                     background-color: rgb(0, 0, 0, 0.25);
                     box-shadow: none;
                 }
+
+
+/*////////// account style //////////////////////*/
+.account-form{
+    background-color:var(--skyblue);
+    padding:10px;
+    border-radius:10px;
+    color:white;
+    margin:auto;
+}
+
+.account-form input{
+    background-color:white;
+    border-radius:45px;
+    text-align:center;
+    margin-bottom:5px;
+}
+
+.account-form button{
+    background-color:black;
+    color:white;
+    outline:none;
+    border:none;
+    border-radius:45px;
+    margin-top:32px;
+}
+
+.account-form a{
+    background-color:transparent;
+    color:white;
+    text-decoration:none;
+}

@@ -11,6 +11,7 @@ builder.Services.AddRazorPages().AddRazorRuntimeCompilation();
 builder.Services.AddScoped<DatabaseContext, DatabaseContext>();
 builder.Services.AddScoped<IGroup, GroupService>();
 builder.Services.AddScoped<IProduct, ProductService>();
+builder.Services.AddScoped<IAccount, AccountService>();
 
 var app = builder.Build();
 
