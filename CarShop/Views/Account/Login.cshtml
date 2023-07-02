@@ -1,12 +1,12 @@
-﻿@model CarShop.Core.ViewModels.RegisterViewModel
+﻿@model CarShop.Core.ViewModels.LoginViewModel
 @{
-    ViewData["Title"] = "Register";
+    ViewData["Title"] = "Login";
     Layout = "~/Views/Shared/_AccountLayout.cshtml";
 }
 
 <div class="account-form col-md-4 col-sm-6 col-11 mt-5">
-    <form asp-controller="account" asp-action="register" >
-        <h1>Register</h1>
+    <form asp-controller="account" asp-action="login">
+        <h1>Login</h1>
         <hr class="w-75" />
         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
         <div class="form-group">
@@ -21,16 +21,12 @@
             <span asp-validation-for="Password" class="text-warning"></span>
         </div>
 
+       
         <div class="form-group">
-            <label asp-for="RePassword" class="control-label"></label>
-            <input asp-for="RePassword" class="form-control" />
-            <span asp-validation-for="RePassword" class="text-warning"></span>
-        </div>
-
-        <div class="form-group">
-            <button type="submit" class="form-control">register</button>
+            <button type="submit" class="form-control">login</button>
             <hr class="w-75" />
-            <a asp-action="login"><span class="fa fa-sign-in"></span> login</a>
+            <a asp-action="register">
+                <span class="fa fa-user-plus"></span> register</a>
         </div>
 
 

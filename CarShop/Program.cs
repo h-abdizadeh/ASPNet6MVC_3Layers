@@ -13,6 +13,15 @@ builder.Services.AddScoped<IGroup, GroupService>();
 builder.Services.AddScoped<IProduct, ProductService>();
 builder.Services.AddScoped<IAccount, AccountService>();
 
+const string scheme = "carshop";
+builder.Services.AddAuthentication(scheme).AddCookie(scheme, option =>
+{
+    option.LoginPath = "/Account/Login";
+    option.AccessDeniedPath = "/Account/Login";
+    option.ExpireTimeSpan = TimeSpan.FromDays(30);
+});
+
+
 var app = builder.Build();
 
 //if (builder.Environment.IsDevelopment())
@@ -27,6 +36,9 @@ var app = builder.Build();
 app.UseRouting();
 app.UseStaticFiles();
 
+
+app.UseAuthentication();
+app.UseAuthorization();
 
 //app.MapGet("/", () => "Hello World!");
 app.UseEndpoints(endpoints =>

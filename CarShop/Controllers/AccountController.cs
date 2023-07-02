@@ -40,6 +40,13 @@ namespace CarShop.Controllers
             return View();
         }
 
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult Login(LoginViewModel login)
+        {
+            return View();
+        }
+
         public IActionResult Logout()
         {
             return View();
