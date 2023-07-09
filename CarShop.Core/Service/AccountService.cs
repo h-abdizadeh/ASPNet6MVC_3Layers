@@ -4,7 +4,10 @@ using CarShop.Core.ViewModels;
 using CarShop.Database.Classes;
 using CarShop.Database.Context;
 using CarShop.Database.Models;
+using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
+using System.Net;
+using System.Security.Claims;
 
 namespace CarShop.Core.Service;
 
@@ -33,7 +36,7 @@ public class AccountService : IAccount
             User newUser = new User()
             {
                 Id = Guid.NewGuid(),
-                RoleId = _context.Roles.SingleOrDefault(r => r.RoleName=="user").Id,
+                RoleId = _context.Roles.SingleOrDefault(r => r.RoleName == "user").Id,
 
                 Mobile = register.Mobile,
                 Password = await new Security().HashPassword(await new Security().HashPassword(register.Password)),
@@ -54,9 +57,32 @@ public class AccountService : IAccount
 
     public void Dispose()
     {
-        if (_context!=null)
+        if (_context != null)
         {
             _context.Dispose();
+        }
+    }
+
+    public async Task<User> loginUser(LoginViewModel login)
+    {
+        try
+        {
+            var hashPassword =
+                await new Security().HashPassword(await new Security().HashPassword(login.Password));
+
+            var user =
+                await _context.Users.Include(u => u.Role)
+                          .FirstOrDefaultAsync(u => u.Mobile == login.Mobile
+                          && u.Password == hashPassword);
+
+            if (user != null) return user;
+          
+            return null;
+        }
+        catch (Exception)
+        {
+
+            return null;
         }
     }
 }

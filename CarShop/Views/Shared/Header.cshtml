@@ -17,8 +17,8 @@
             <input type="text" placeholder="search...">
         </div>
 
-       
-     
+
+
     </div>
 
     <!-- menu button -->
@@ -33,10 +33,24 @@
             <span>Cars</span>
         </a> |
 
-        <a asp-controller="Admin" asp-action="index" class="a3">
-            <span class="fa fa-sign-in"></span>
-            <span>login</span>
-        </a> |
+
+        @{
+            if (User.Identity.IsAuthenticated)
+            {
+                <a asp-controller="profile" asp-action="index" class="a3 text-warning">
+                    <span class="fa fa-user"></span>
+                    <span>profile</span>
+                </a>
+            }
+            else
+            {
+                <a asp-controller="account" asp-action="login" class="a3">
+                    <span class="fa fa-sign-in"></span>
+                    <span>login</span>
+                </a>
+            }
+        }
+        |
 
         <a class="a4">
             <span class="fa fa-info"></span>

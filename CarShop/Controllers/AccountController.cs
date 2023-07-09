@@ -1,6 +1,10 @@
 ﻿using CarShop.Core.Interface;
 using CarShop.Core.ViewModels;
+using CarShop.Database.Models;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 
 namespace CarShop.Controllers
 {
@@ -40,16 +44,54 @@ namespace CarShop.Controllers
             return View();
         }
 
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public IActionResult Login(LoginViewModel login)
+        [HttpPost, ValidateAntiForgeryToken]
+        public async Task<IActionResult> Login(LoginViewModel login)
         {
-            return View();
+
+            if (ModelState.IsValid)
+            {
+                var user = await _account.loginUser(login);
+
+                if (user != null)
+                {
+                    ///
+                    var claims = new List<Claim>()
+                    {
+                    new Claim(ClaimTypes.NameIdentifier,user.Id.ToString()),
+                    new Claim(ClaimTypes.Name,user.Mobile),
+                    new Claim(ClaimTypes.Role,user.Role.RoleName)
+                };
+
+                    var identity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
+                    var principale = new ClaimsPrincipal(identity);
+
+                    var properties = new AuthenticationProperties()
+                    {
+                        IsPersistent = true //remember me مرا به خاطر بسپار
+                    };
+
+                    await HttpContext.SignInAsync(principale, properties);
+
+                    //redirect base on user role (admin/user)
+                    if (user.Role.RoleName == "admin")
+                    {
+                        return Redirect("~/admin/panel/index");
+                    }
+
+                    return Redirect("~/profile/index");
+
+                }
+
+            }
+
+            return View(login);
         }
 
-        public IActionResult Logout()
+        public async Task<IActionResult> Logout()
         {
-            return View();
+            await HttpContext.SignOutAsync();
+
+            return RedirectToAction("index", "home");
         }
     }
 }
