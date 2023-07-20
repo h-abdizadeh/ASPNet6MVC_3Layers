@@ -12,6 +12,7 @@ builder.Services.AddScoped<DatabaseContext, DatabaseContext>();
 builder.Services.AddScoped<IGroup, GroupService>();
 builder.Services.AddScoped<IProduct, ProductService>();
 builder.Services.AddScoped<IAccount, AccountService>();
+builder.Services.AddScoped<IProfile, ProfileService>();
 
 const string scheme = "carshop";
 builder.Services.AddAuthentication(scheme).AddCookie(scheme, option =>
