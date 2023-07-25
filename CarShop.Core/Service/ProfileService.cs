@@ -1,5 +1,6 @@
 ﻿
 
+using CarShop.Core.Classes;
 using CarShop.Core.Interface;
 using CarShop.Core.ViewModels;
 using CarShop.Database.Context;
@@ -17,30 +18,93 @@ public class ProfileService : IProfile
         _context = context;
     }
 
-    public async Task<Factor> AddShopping(ShoppingViewModel shopping)
+    public async Task<Guid> AddShopping(ShoppingViewModel shopping)
     {
-
         //1
+        //find product by Id
+        var product =
+            await _context.Products.FindAsync(shopping.ProductId);
+
+        if (product == null) return Guid.Empty;
+        var price =
+    product.Price - (product.Price * product.SellOff / 100);
+
+
+        //2
         //user factor where isPay==false
         var factor = await _context.Factors.
                             Include(f => f.FactorDetails).
-                            FirstOrDefaultAsync(f => 
+                            FirstOrDefaultAsync(f =>
                             f.UserId == shopping.UserId && !f.IsPay);
-
-        //2
-        //create new factor where factor==null 
-        if (factor==null)
+        try
         {
-            Factor newFactor = new Factor()
+            //3
+            //create new factor where factor==null 
+            if (factor == null)
             {
-                Id = Guid.NewGuid(),
-                UserId = shopping.UserId,
-                //OpenDateTime=
+                Factor newFactor = new Factor()
+                {
+                    Id = Guid.NewGuid(),
+                    UserId = shopping.UserId,
+                    OpenDateTime = await new CoreClass().GetPersianDate(),
+                    IsPay = false,
+                    Status = "در انتظار پرداخت",
+                };
 
-            };
+                await _context.Factors.AddAsync(newFactor);
+
+                //create newFactor detail
+                FactorDetail newDetail = new FactorDetail()
+                {
+                    FactorId = newFactor.Id,
+                    ProductId = product.Id,
+                    DetailCount = 1,
+                    DetailPrice = price * 1,//price * detailCount
+                };
+
+                await _context.FactorDetails.AddAsync(newDetail);
+                await _context.SaveChangesAsync();
+
+                return newFactor.Id;
+            }
+
+            //3
+            //update existing factor
+            var detail =
+                factor.FactorDetails.FirstOrDefault(d => d.ProductId == shopping.ProductId);
+
+            //add detail in existing factor
+            if (detail == null)
+            {
+                FactorDetail newDetail = new FactorDetail()
+                {
+                    FactorId = factor.Id,
+                    ProductId = product.Id,
+                    DetailCount = 1,
+                    DetailPrice = price * 1,//price * detailCount
+                };
+
+                await _context.FactorDetails.AddAsync(newDetail);
+                await _context.SaveChangesAsync();
+
+                return factor.Id;         
+            }
+
+            //update existing factorDetail in existing factor
+            detail.DetailCount += 1;
+            detail.DetailPrice = price * detail.DetailCount;
+
+            await _context.SaveChangesAsync();
+            return factor.Id;
+
+
+        }
+        catch (Exception error)
+        {
+            Console.WriteLine("add shopping error ===> {0}", error.Message);
+            return Guid.Empty;
         }
 
-        return null;
     }
 
     public async void Dispose()
