@@ -1,4 +1,4 @@
-﻿@model CarShop.Database.Models.Product
+﻿@model CarShop.Database.Models.-
 
 @{
     ViewData["Title"] = "ProductInfo";
@@ -25,27 +25,40 @@
         <partial name="productFeatureTable" model="ViewBag.ProductFeatures">
 
 
-        @*add to shoppingcart*@
-        <div class="col-md-4 col-12 float-end">
-            @{
-                var price = Model.Price;
-                var sellOff = Model.SellOff;
-                var finalPrice = price;
+            @*add to shoppingcart*@
+            <div class="col-md-4 col-12 float-end">
+                @{
+                    var price = Model.Price;
+                    var sellOff = Model.SellOff;
+                    var finalPrice = price;
 
-                if (sellOff > 0)
-                {
-                    finalPrice = price - (price * sellOff / 100);
-                    <s class="fw-bold text-black-50">@price.ToString("n0") $</s>
-                    <span class="bg-warning rounded-circle p-1 pt-2 pb-2 text-black small fw-bold">@Model.SellOff %</span>
+                    if (sellOff > 0)
+                    {
+                        finalPrice = price - (price * sellOff / 100);
+                        <s class="fw-bold text-black-50">@price.ToString("n0") $</s>
+                        <span class="bg-warning rounded-circle p-1 pt-2 pb-2 text-black small fw-bold">@Model.SellOff %</span>
+                    }
                 }
-            }
-            <div class="btn bg-skyblue p-1 w-100 mt-2">
-                <span class="fa fa-cart-arrow-down fa-lg bg-white rounded-1 p-2 w-100 fw-bold">
-                    <span>@finalPrice.ToString("n0")</span>
-                </span>
-                <button class="btn bg-skyblue w-100 text-white fw-bold fs-5">Add To Parking</button>
+                <div class="btn bg-skyblue p-1 w-100 mt-2">
+                    <span class="fa fa-cart-arrow-down fa-lg bg-white rounded-1 p-2 w-100 fw-bold">
+                        <span>@finalPrice.ToString("n0")</span>
+                    </span>
+
+
+                    @{
+                        if (User.Identity.IsAuthenticated)
+                        {
+                            <button class="btn bg-skyblue w-100 text-white fw-bold fs-5">Add To Parking</button>
+                        }
+                        else
+                        {
+                            <a asp-controller="account" asp-action="login" class="w-100 text-warning fw-bold fs-5 text-decoration-none">Go To Login</a>
+                        }
+                    }
+
+
+                </div>
             </div>
-        </div>
     </div>
 </div>
 
@@ -58,7 +71,7 @@
     {
         <div class="col-12 p-3">
 
-            <h1 class="text-info" >similar cars</h1>
+            <h1 class="text-info">similar cars</h1>
             <hr class="border-info" />
             <partial name="productsPartial" model="products" />
         </div>
@@ -68,5 +81,6 @@
 
 <div>
     <a class="btn btn-outline-info rounded-5 m-2" asp-action="Index">
-        <span class="fa fa-angle-left"></span> Back to Home</a>
+        <span class="fa fa-angle-left"></span> Back to Home
+    </a>
 </div>

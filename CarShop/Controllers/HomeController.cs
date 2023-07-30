@@ -8,10 +8,12 @@ public class HomeController : Controller
 {
     IGroup _group;
     IProduct _product;
-    public HomeController(IGroup group, IProduct product)
+    IProfile _profile;
+    public HomeController(IGroup group, IProduct product,IProfile profile)
     {
         _group = group;
         _product = product;
+        _profile = profile;
     }
 
     public async Task<IActionResult> Index()
@@ -42,6 +44,18 @@ public class HomeController : Controller
     public async Task<IActionResult> ProductInfo(Guid id)//id ==> productId
     {
         var product = await _product.GetProduct(id);
+
+        ShoppingViewModel shopping = new ShoppingViewModel()
+        {
+            UserId = (await _profile.GetUser(User.Identity.Name)).Id,
+            ProductId = product.Id,
+        };
+
+        ProductInfoViewModel productInfo = new ProductInfoViewModel()
+        {
+            ProductInfo = product,
+            Shopping = shopping
+        };
 
         //ViewBag.RelatedProducts = await _product.GetProducts(id);
         ViewData["RelatedProducts"] = await _product.GetProducts(id);
