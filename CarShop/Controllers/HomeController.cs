@@ -1,5 +1,6 @@
 ﻿using CarShop.Core.Interface;
 using CarShop.Core.ViewModels;
+using CarShop.Database.Models;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CarShop.Controllers;
@@ -44,13 +45,18 @@ public class HomeController : Controller
     public async Task<IActionResult> ProductInfo(Guid id)//id ==> productId
     {
         var product = await _product.GetProduct(id);
+        var user = await _profile.GetUser(User.Identity.Name);
+        ShoppingViewModel shopping = new ShoppingViewModel();
 
-        ShoppingViewModel shopping = new ShoppingViewModel()
-        {
-            UserId = (await _profile.GetUser(User.Identity.Name)).Id,
-            ProductId = product.Id,
-        };
+        if (user == null) goto PRODUCT;
 
+        //set shopping parameter values
+        shopping.UserId = user.Id;
+        shopping.ProductId = product.Id;
+       
+
+        //if user not login
+        PRODUCT:
         ProductInfoViewModel productInfo = new ProductInfoViewModel()
         {
             ProductInfo = product,
@@ -61,6 +67,6 @@ public class HomeController : Controller
         ViewData["RelatedProducts"] = await _product.GetProducts(id);
         ViewBag.ProductFeatures = await _product.GetProductFeatures(id);
 
-        return View(product);
+        return View(productInfo);
     }
 }

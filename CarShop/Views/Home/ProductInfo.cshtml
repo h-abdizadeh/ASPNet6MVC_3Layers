@@ -1,26 +1,25 @@
-﻿@model CarShop.Database.Models.-
+﻿@model CarShop.Core.ViewModels.ProductInfoViewModel
 
 @{
     ViewData["Title"] = "ProductInfo";
     Layout = "~/Views/Shared/_MainLayout.cshtml";
 }
 
-
 <div class="col-12 p-3 row">
 
     @*img box*@
     <div class="col-md-5 col-12">
-        <img src="~/image/product/@Model.Img"
+        <img src="~/image/product/@Model.ProductInfo.Img"
              class="w-100 rounded-3 border"
-             alt="@Model.ProductName" />
+             alt="@Model.ProductInfo.ProductName" />
     </div>
 
     @*info box*@
     <div class="col-md-7 col-12 shadow-sm rounded-3 bg-whitesmoke">
-        <h1>@Model.ProductName</h1>
-        <a>@Model.Group.GroupName</a>
-        <p>@Model.Des</p>
-        <h6>inventory : @Model.Inventory</h6>
+        <h1>@Model.ProductInfo.ProductName</h1>
+        <a>@Model.ProductInfo.Group.GroupName</a>
+        <p>@Model.ProductInfo.Des</p>
+        <h6>inventory : @Model.ProductInfo.Inventory</h6>
 
         <partial name="productFeatureTable" model="ViewBag.ProductFeatures">
 
@@ -28,15 +27,15 @@
             @*add to shoppingcart*@
             <div class="col-md-4 col-12 float-end">
                 @{
-                    var price = Model.Price;
-                    var sellOff = Model.SellOff;
+                    var price = Model.ProductInfo.Price;
+                    var sellOff = Model.ProductInfo.SellOff;
                     var finalPrice = price;
 
                     if (sellOff > 0)
                     {
                         finalPrice = price - (price * sellOff / 100);
                         <s class="fw-bold text-black-50">@price.ToString("n0") $</s>
-                        <span class="bg-warning rounded-circle p-1 pt-2 pb-2 text-black small fw-bold">@Model.SellOff %</span>
+                        <span class="bg-warning rounded-circle p-1 pt-2 pb-2 text-black small fw-bold">@Model.ProductInfo.SellOff %</span>
                     }
                 }
                 <div class="btn bg-skyblue p-1 w-100 mt-2">
@@ -48,7 +47,17 @@
                     @{
                         if (User.Identity.IsAuthenticated)
                         {
-                            <button class="btn bg-skyblue w-100 text-white fw-bold fs-5">Add To Parking</button>
+                            //add to shopping cart form
+                            <form asp-controller="profile"
+                          asp-action="AddtoShoppingCart">
+
+                                <input asp-for="Shopping.ProductId" value="@Model.Shopping.ProductId" readonly hidden>
+                                <input asp-for="Shopping.UserId" value="@Model.Shopping.UserId" readonly hidden>
+
+                                <button class="btn bg-skyblue w-100 text-white fw-bold fs-5">Add To Parking</button>
+                            </form>
+
+
                         }
                         else
                         {
