@@ -35,4 +35,14 @@ public class ProfileController : Controller
 
         return factorId;
     } 
+
+
+    public async Task<IActionResult> ShoppingCart()
+    {
+        var user = await _profile.GetUser(User.Identity.Name);
+
+        var factor = await _profile.GetFactor(user.Id);
+
+        return View(factor);
+    }
 }

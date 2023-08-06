@@ -7,4 +7,6 @@ public interface IProfile:IDisposable
 {
     Task<User> GetUser(string userMobile);
     Task<Guid> AddShopping(ShoppingViewModel shopping);//return factorId
+
+    Task<Factor> GetFactor(Guid userId,bool? isPay=false);
 }

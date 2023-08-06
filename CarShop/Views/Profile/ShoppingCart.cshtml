@@ -1,0 +1,33 @@
+﻿@model CarShop.Database.Models.Factor
+
+@{
+    ViewData["Title"] = "ShoppingCart";
+    Layout = "~/Areas/Admin/Views/Shared/_PanelLayout.cshtml";
+}
+
+<h1>سبد خرید شما</h1>
+<hr />
+
+<div>
+    @foreach (var item in Model.FactorDetails)
+    {
+        <h4>@item.Product.ProductName</h4>
+       
+            if (item.Product.SellOff > 0)
+            {
+                var price = item.Product.Price;
+                var sellOff = item.Product.SellOff;
+                var finalPrice = price - (price * sellOff / 100);
+                <h6>
+                    <s>@price</s>
+                    تخفیف <span class="bg-danger rounded-5 p-1 text-white">@sellOff %</span>
+                    <span class="fw-bold">@finalPrice</span>
+                </h6>
+            }
+            else
+            {
+                <h6>@item.Product.Price</h6>
+            }
+        
+    }
+</div>

@@ -1,6 +1,4 @@
-﻿
-
-using CarShop.Core.Classes;
+﻿using CarShop.Core.Classes;
 using CarShop.Core.Interface;
 using CarShop.Core.ViewModels;
 using CarShop.Database.Context;
@@ -113,6 +111,17 @@ public class ProfileService : IProfile
         {
             await _context.DisposeAsync();
         }
+    }
+
+    public async Task<Factor> GetFactor(Guid userId, bool? isPay = false)
+    {
+        var factor = 
+            await _context.Factors
+            .Include(f=>f.FactorDetails)
+            .Include("FactorDetails.Product")
+            .FirstOrDefaultAsync(f => f.UserId == userId && f.IsPay == isPay);
+
+        return factor;
     }
 
     public async Task<User> GetUser(string userMobile)
